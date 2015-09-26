@@ -234,6 +234,7 @@ void allMeanders(gridNodeStack *solutions, grid *toWalk){
         }
         currentNode = gridNodeStack_pop(toSolve);
     }
+    releaseGridNodeStack(toSolve);
 }
 
 void paintCellHorizontalBorder(int rowLength) {
@@ -305,6 +306,7 @@ grid *runGridCreateMenu() {
 }
 
 void runMeanderMenu(){
+    bool quit = false;
     while(1) {
         grid* unsolvedGrid = runGridCreateMenu();
         printf("Do you want:\n");
@@ -323,11 +325,13 @@ void runMeanderMenu(){
                 break;
             case 3:
                 printf("\nGoodbye.\n");
-                return;
+                quit = true;
+                break;
             default:
                 "Did not understand choice. Try again";
         }
         releaseGrid(unsolvedGrid);
+        if (quit) return;
     }
 }
 
