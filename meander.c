@@ -9,6 +9,14 @@
 #define END 2
 #define PATH 3
 
+//grid defaults
+#define DEFAULT_GRID_HEIGHT 4
+#define DEFAULT_GRID_WIDTH 6
+#define DEFAULT_GRID_START_X 0
+#define DEFAULT_GRID_START_Y 2
+#define DEFAULT_GRID_END_X 5
+#define DEFAULT_GRID_END_Y 0
+
 typedef struct point {
     int x;
     int y;
@@ -296,12 +304,30 @@ void doAllMeanders(grid* unsolvedGrid) {
     releaseGridNodeStack(solutions);
 }
 
+bool runUseCustomGridMenu() {
+    printf("Do you want to use a custom grid?[y/n]:  ");
+
+    int useCustom;
+    do {
+        useCustom = getc(stdin);
+    }
+    while (useCustom != 'y' && useCustom != 'n');
+    return useCustom == 'y';
+}
+
 grid *runGridCreateMenu() {
-    int height, width;
+    int height = DEFAULT_GRID_HEIGHT, width = DEFAULT_GRID_WIDTH;
     point start, end;
-    printf("Please enter grid height,width,startX,startY,endX,endY: ");
-    scanf("%d,%d,%d,%d,%d,%d", 
-            &height, &width, &start.x, &start.y, &end.x, &end.y);
+    start.x = DEFAULT_GRID_START_X;
+    start.y = DEFAULT_GRID_START_Y;
+    end.x = DEFAULT_GRID_END_X;
+    end.y = DEFAULT_GRID_END_Y;
+
+    if (runUseCustomGridMenu()) {
+        printf("Please enter grid height,width,startX,startY,endX,endY: ");
+        scanf("%d,%d,%d,%d,%d,%d", 
+                &height, &width, &start.x, &start.y, &end.x, &end.y);
+    }
     return createInitialGrid(height, width, start, end);
 }
 
